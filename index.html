@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumen - Accedi</title>
+    <link rel="icon" type="image/png" href="./Logo/logo.png">
+    <link rel="apple-touch-icon" href="./Logo/logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme auth-page">
+    <main class="auth-container">
+        <img src="./Logo/logo.png" alt="Lumen" class="auth-logo-img">
+        <h1 class="logo-title">Lumen</h1>
+        <p class="logo-subtitle">Private Communication System</p>
+
+        <form id="login-form" class="auth-form">
+            <h2>Accedi</h2>
+            <input type="email" id="login-email" placeholder="Email" autocomplete="email" required>
+            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
+            <button type="submit" class="btn-primary">Entra</button>
+            <p class="toggle-form">Non hai un account? <a href="#" id="show-register">Registrati</a></p>
+        </form>
+
+        <form id="register-form" class="auth-form hidden">
+            <h2>Registrati</h2>
+            <input type="text" id="register-nickname" placeholder="Nickname" autocomplete="nickname" required>
+            <input type="email" id="register-email" placeholder="Email" autocomplete="email" required>
+            <input type="password" id="register-password" placeholder="Password (min. 6 caratteri)" autocomplete="new-password" required>
+            <button type="submit" class="btn-primary">Crea account</button>
+            <p class="toggle-form">Hai gi&agrave; un account? <a href="#" id="show-login">Accedi</a></p>
+        </form>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
+    <script src="./firebase.js"></script>
+    <script src="./auth.js"></script>
+</body>
+</html>

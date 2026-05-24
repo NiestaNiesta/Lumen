@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumen - Dashboard</title>
+    <link rel="icon" type="image/png" href="./Logo/logo.png">
+    <link rel="apple-touch-icon" href="./Logo/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="dark-theme">
+    <div id="mobile-panel-backdrop" class="mobile-panel-backdrop hidden" aria-hidden="true"></div>
+
+    <div class="app-container">
+        <aside class="sidebar" aria-label="Navigazione principale">
+            <div class="top-icons">
+                <div class="logo-icon" title="Lumen">
+                    <img src="./Logo/logo.png" alt="Lumen" class="lumen-logo-img">
+                </div>
+
+                <button class="nav-btn active" data-target="section-home" title="Home">
+                    <i data-lucide="home"></i>
+                </button>
+                <button class="nav-btn" data-target="section-messages" title="Messaggi">
+                    <i data-lucide="message-square"></i>
+                </button>
+                <button class="nav-btn" data-target="section-friends" title="Amici">
+                    <i data-lucide="user-round-plus"></i>
+                </button>
+                <button class="nav-btn" data-target="section-groups" title="Gruppi">
+                    <i data-lucide="users"></i>
+                </button>
+                <button class="nav-btn" data-target="section-settings-menu" title="Impostazioni">
+                    <i data-lucide="settings"></i>
+                </button>
+            </div>
+            <button id="mobile-panel-toggle" class="mobile-panel-toggle" type="button" title="Apri/chiudi menu" aria-expanded="false">
+                <i data-lucide="chevron-right" class="mobile-toggle-icon"></i>
+            </button>
+        </aside>
+
+        <main class="main-content">
+            <aside class="sidebar-panel">
+                <div class="panel-viewport">
+                <section id="section-home" class="panel-content active">
+                    <div class="panel-intro">
+                        <h2>Menu Principale</h2>
+                        <p>Benvenuto su Lumen. Ecco le notifiche e i collegamenti rapidi.</p>
+                    </div>
+                    <div class="home-sidebar-block home-notifications-block">
+                        <button id="home-notifications-toggle" class="home-notifications-toggle" type="button" aria-expanded="false" aria-controls="home-notifications-body">
+                            <span class="home-notifications-toggle-label">
+                                <i data-lucide="bell-ring"></i>
+                                Notifiche non lette
+                            </span>
+                            <span class="home-notifications-toggle-actions">
+                                <span id="home-notifications-badge" class="home-notifications-badge hidden">0</span>
+                                <i data-lucide="chevron-down" class="home-notifications-chevron"></i>
+                            </span>
+                        </button>
+                        <div id="home-notifications-body" class="home-notifications-body">
+                            <div id="home-missed-alerts" class="home-missed-alerts">
+                                <p class="secondary-text home-alert-empty">Nessuna notifica al momento.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-sidebar-block home-report-block">
+                        <h3><i data-lucide="flag"></i> Vuoi segnalare un bug o un utente?</h3>
+                        <p class="secondary-text report-block-hint">Invia una segnalazione al team Lumen. Le prove sono facoltative.</p>
+                        <div class="report-type-actions">
+                            <button id="btn-open-report-user" class="btn-primary report-type-btn" type="button">
+                                <i data-lucide="user-x"></i>
+                                Utente
+                            </button>
+                            <button id="btn-open-report-bug" class="btn-secondary report-type-btn" type="button">
+                                <i data-lucide="bug"></i>
+                                Bug
+                            </button>
+                        </div>
+                    </div>
+                    <div class="home-sidebar-block">
+                        <h3><i data-lucide="layout-grid"></i> Accesso rapido</h3>
+                        <div class="home-quick-links">
+                            <button class="home-quick-link" type="button" data-target="section-messages">
+                                <i data-lucide="message-square"></i> Messaggi
+                            </button>
+                            <button class="home-quick-link" type="button" data-target="section-friends">
+                                <i data-lucide="user-round-plus"></i> Amici
+                            </button>
+                            <button class="home-quick-link" type="button" data-target="section-groups">
+                                <i data-lucide="users"></i> Gruppi
+                            </button>
+                            <button class="home-quick-link" type="button" data-target="section-settings-menu">
+                                <i data-lucide="settings"></i> Impostazioni
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-messages" class="panel-content hidden">
+                    <div class="header-section">
+                        <h2>Messaggi</h2>
+                    </div>
+                    <div class="search-container">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="search-messages" placeholder="Cerca conversazione...">
+                    </div>
+                    <div id="messages-list" class="items-list">
+                        <div class="empty-state">
+                            <i data-lucide="message-square"></i>
+                            <p class="primary-text">Nessuna conversazione</p>
+                            <p class="secondary-text">Aggiungi un amico per iniziare a scrivere.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="section-friends" class="panel-content hidden">
+                    <div class="header-section">
+                        <h2>Amici</h2>
+                        <button id="copy-my-id-btn" class="my-code-badge" type="button" data-uid="">
+                            <span class="code-label">ID</span>
+                            <span id="friend-code-display" class="code-value">...</span>
+                        </button>
+                    </div>
+
+                    <div class="add-friend-panel">
+                        <p class="panel-title">Aggiungi tramite ID</p>
+                        <div class="add-friend-form">
+                            <input type="text" id="friend-id-input-real" placeholder="Incolla ID amico">
+                            <button id="add-friend-action-btn" class="btn-primary" type="button">
+                                <i data-lucide="user-plus"></i>
+                                Aggiungi
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="friends-tabs">
+                        <button class="tab-item active" type="button" data-tab="friends-list-real">
+                            <i data-lucide="user-check"></i>
+                            Friends
+                        </button>
+                        <button class="tab-item" type="button" data-tab="pending-list">
+                            <i data-lucide="clock"></i>
+                            Pending
+                        </button>
+                    </div>
+
+                    <div id="friends-list-real" class="items-list"></div>
+                    <div id="pending-list" class="items-list hidden"></div>
+                </section>
+
+                <section id="section-groups" class="panel-content hidden">
+                    <div class="header-section">
+                        <h2>Gruppi</h2>
+                        <button id="lumen-open-create-group" class="action-btn open-group-modal" type="button" title="Crea gruppo">
+                            <i data-lucide="plus"></i>
+                        </button>
+                    </div>
+                    <div id="groups-list" class="items-list">
+                        <div class="empty-state">
+                            <i data-lucide="users"></i>
+                            <p class="primary-text">Nessun gruppo attivo</p>
+                        </div>
+                    </div>
+
+                    <div class="panel-divider"></div>
+
+                    <div class="header-section compact">
+                        <h3>Inviti</h3>
+                    </div>
+                    <div id="group-invites-list" class="items-list"></div>
+                </section>
+
+                <section id="section-settings-menu" class="panel-content hidden">
+                    <div class="header-section">
+                        <h2>Impostazioni</h2>
+                    </div>
+                    <div class="settings-menu-list">
+                        <button class="settings-menu-btn active" type="button" data-settings-target="sub-settings-profile">
+                            <i data-lucide="user"></i>
+                            Profilo
+                        </button>
+                        <button class="settings-menu-btn" type="button" data-settings-target="sub-settings-appearance">
+                            <i data-lucide="palette"></i>
+                            Aspetto
+                        </button>
+                        <button class="settings-menu-btn" type="button" data-settings-target="sub-settings-privacy">
+                            <i data-lucide="lock"></i>
+                            Privacy
+                        </button>
+                        <button class="settings-menu-btn" type="button" data-settings-target="sub-settings-account">
+                            <i data-lucide="shield-alert"></i>
+                            Account
+                        </button>
+                        <button id="settings-admin-btn" class="settings-menu-btn hidden" type="button" data-settings-target="sub-settings-admin">
+                            <i data-lucide="shield"></i>
+                            Admin Panel
+                        </button>
+                    </div>
+                </section>
+                </div>
+
+                <div id="voice-widget" class="sidebar-voice-dock" aria-label="Controlli voce">
+                    <div class="voice-dock-user">
+                        <div class="voice-widget-pfp" id="voice-widget-pfp">L</div>
+                        <div class="voice-dock-meta">
+                            <span id="voice-widget-nickname" class="voice-widget-nickname">Utente</span>
+                            <div class="voice-dock-status">
+                                <span id="voice-mic-status" class="voice-status-pill" title="Microfono"><i data-lucide="mic"></i></span>
+                                <span id="voice-headset-status" class="voice-status-pill" title="Audio chiamate"><i data-lucide="headphones"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voice-widget-controls">
+                        <button id="voice-mic-toggle" class="voice-control-btn" type="button" title="Mute/Unmute microfono">
+                            <i data-lucide="mic"></i>
+                        </button>
+                        <button id="voice-headset-toggle" class="voice-control-btn" type="button" title="Attiva/Disattiva audio chiamate">
+                            <i data-lucide="headphones"></i>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="chat-window empty" id="chat-window-content">
+                <div id="lumen-home-dashboard" class="home-dashboard">
+                    <article class="card welcome-card">
+                        <div class="welcome-content">
+                            <h2 id="dashboard-welcome-title"><img src="./Logo/logo.png" alt="Lumen" class="dashboard-welcome-logo"> Bentornato su Lumen</h2>
+                            <p>La tua connessione &egrave; sicura. Seleziona una chat o esplora i gruppi per iniziare a comunicare.</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h3><i data-lucide="activity"></i> Panoramica di Sistema</h3>
+                        <div class="stat-list">
+                            <div class="stat-row">
+                                <span class="stat-label">Stato Rete</span>
+                                <span class="stat-value status-online">Online</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Ping</span>
+                                <span class="stat-value">24 ms</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Crittografia</span>
+                                <span class="stat-value text-accent">Attiva (E2E)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h3><i data-lucide="users"></i> Amici Online</h3>
+                        <ul id="dashboard-online-friends" class="dashboard-list">
+                            <li class="list-item">
+                                <div class="avatar-small dashboard-avatar-placeholder"></div>
+                                <span>Nessun amico online al momento.</span>
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3><img src="./Logo/logo.png" alt="Lumen" class="dashboard-welcome-logo"> Novit&agrave; Lumen</h3>
+                        <ul class="dashboard-list changelog-list">
+                            <li class="list-item"><span class="changelog-tag">v1.3</span> Supporto temi "Lumen" e "Personalizzato" con configuratore.</li>
+                            <li class="list-item"><span class="changelog-tag">v1.3</span> Nuova funzione "Copia UID" in tutti i menu utente.</li>
+                            <li class="list-item"><span class="changelog-tag">v1.3</span> Fix critico chat Bot Lumen e stabilit&agrave; rendering.</li>
+                            <li class="list-item"><span class="changelog-tag">v1.3</span> UI migliorata per upload profilo e navigazione mobile.</li>
+                            <li class="list-item"><span class="changelog-tag">v1.2</span> Avatar con ritaglio circolare sincronizzato ovunque.</li>
+                        </ul>
+                    </article>
+
+                </div>
+
+                <div class="chat-placeholder hidden" id="chat-placeholder">
+                    <i data-lucide="message-circle"></i>
+                    <p>Seleziona una conversazione.</p>
+                </div>
+
+                <div id="active-chat-container" class="active-chat-container hidden">
+                    <div class="chat-header">
+                        <div class="chat-header-main">
+                            <div class="chat-item-avatar" id="active-chat-avatar">L</div>
+                            <div>
+                                <h3>Nome Amico</h3>
+                                <p id="active-chat-subtitle">Chat privata</p>
+                            </div>
+                        </div>
+                        <div class="chat-header-actions">
+                            <button id="chat-call-btn" class="chat-call-btn" type="button" title="Chiamata (presto disponibile)">
+                                <i data-lucide="phone"></i>
+                            </button>
+                            <div class="dots-menu-container">
+                                <button id="chat-header-menu-trigger" class="btn-dots-trigger" type="button" title="Opzioni">
+                                    <i data-lucide="more-vertical"></i>
+                                </button>
+                                <div id="chat-header-dropdown" class="lumen-dropdown-menu">
+                                    <button id="btn-chat-copy-uid" class="dropdown-item" type="button">
+                                        <i data-lucide="copy"></i>
+                                        Copia UID
+                                    </button>
+                                    <button id="btn-chat-report-user" class="dropdown-item btn-report-friend" type="button">
+                                        <i data-lucide="flag"></i>
+                                        Segnala utente
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages"></div>
+
+                    <div class="chat-input-container">
+                        <input type="text" id="message-input" placeholder="Scrivi un messaggio...">
+                        <button id="send-message-btn" class="btn-primary icon-btn" type="button" title="Invia">
+                            <i data-lucide="send"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <section id="section-settings-content" class="settings-content hidden">
+                    <div class="settings-layout">
+                        <div id="sub-settings-profile" class="sub-settings-panel">
+                            <div class="settings-card">
+                                <div class="profile-card-header">
+                                    <div class="avatar-circle avatar-initial" id="profile-avatar">?</div>
+                                    <div class="profile-info">
+                                        <h3 id="profile-name">Caricamento...</h3>
+                                        <p id="profile-email">Caricamento...</p>
+                                    </div>
+                                </div>
+                                <div class="nickname-form">
+                                    <label class="form-label" for="nickname-input">Nickname</label>
+                                    <input type="text" id="nickname-input" placeholder="Scegli un nickname" maxlength="32">
+                                    <p id="nickname-error" class="field-error hidden" role="alert"></p>
+
+                                    <label class="form-label">Colore avatar</label>
+                                    <div class="accent-color-selector">
+                                        <button class="color-option purple selected" type="button" data-color="purple" title="Viola"></button>
+                                        <button class="color-option teal" type="button" data-color="teal" title="Teal"></button>
+                                        <button class="color-option pink" type="button" data-color="pink" title="Rosa"></button>
+                                        <button class="color-option orange" type="button" data-color="orange" title="Arancio"></button>
+                                    </div>
+
+                                    <label class="form-label" for="avatar-file-input">Immagine profilo</label>
+                                    <div class="avatar-upload-row">
+                                        <label for="avatar-file-input" class="btn-primary custom-file-upload">
+                                            <i data-lucide="upload"></i>
+                                            Scegli immagine
+                                        </label>
+                                        <input type="file" id="avatar-file-input" accept="image/*" class="hidden-input">
+                                        <button id="clear-avatar-btn" class="btn-secondary" type="button">
+                                            <i data-lucide="image-off"></i>
+                                            Rimuovi
+                                        </button>
+                                    </div>
+
+                                    <button id="save-settings-btn" class="btn-primary profile-save-btn" type="button">
+                                        <i data-lucide="save"></i>
+                                        Salva profilo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="sub-settings-appearance" class="sub-settings-panel hidden settings-appearance-layout">
+                            <div class="settings-card settings-appearance-card">
+                                <h4 class="card-title">Tema</h4>
+                                <div class="theme-switch-container">
+                                    <button id="theme-dark-btn" class="btn-secondary theme-btn active" type="button" data-theme="dark">
+                                        <i data-lucide="moon"></i>
+                                        Dark
+                                    </button>
+                                    <button id="theme-light-btn" class="btn-secondary theme-btn" type="button" data-theme="light">
+                                        <i data-lucide="sun"></i>
+                                        Light
+                                    </button>
+                                    <button id="theme-neon-btn" class="btn-secondary theme-btn" type="button" data-theme="neon">
+                                        <i data-lucide="zap"></i>
+                                        Neon
+                                    </button>
+                                    <button id="theme-lumen-btn" class="btn-secondary theme-btn" type="button" data-theme="lumen">
+                                        <img src="./Logo/logo.png" alt="" class="theme-btn-logo">
+                                        Lumen
+                                    </button>
+                                    <button id="theme-custom-btn" class="btn-secondary theme-btn" type="button" data-theme="custom">
+                                        <i data-lucide="settings-2"></i>
+                                        Custom
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="settings-card settings-appearance-card">
+                                <h4 class="card-title">Dimensione testo</h4>
+                                <div class="text-size-control">
+                                    <button id="text-size-small" class="btn-secondary font-size-btn" type="button">Small</button>
+                                    <button id="text-size-medium" class="btn-secondary font-size-btn active" type="button">Medium</button>
+                                    <button id="text-size-large" class="btn-secondary font-size-btn" type="button">Large</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="sub-settings-privacy" class="sub-settings-panel hidden">
+                            <div class="settings-card">
+                                <h4 class="card-title">Privacy chat</h4>
+                                <label class="toggle-row">
+                                    <input type="checkbox" id="presence-toggle" checked>
+                                    <span>Mostra il mio stato online agli amici</span>
+                                </label>
+                                <label class="toggle-row">
+                                    <input type="checkbox" id="compact-mode-toggle">
+                                    <span>Modalit&agrave; compatta per liste e chat</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="sub-settings-account" class="sub-settings-panel hidden">
+                            <div class="settings-card">
+                                <h4 class="card-title">Sessione</h4>
+                                <p class="secondary-text">Disconnettiti in modo sicuro dal tuo account corrente.</p>
+                                <div class="account-actions">
+                                    <button id="logout-btn-real" class="btn-danger" type="button">
+                                        <i data-lucide="log-out"></i>
+                                        Log out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="sub-settings-admin" class="sub-settings-panel hidden admin-panel-layout">
+                            <div class="settings-card admin-hub-card">
+                                <h4 class="card-title"><i data-lucide="shield"></i> Admin Panel</h4>
+                                <p class="secondary-text">Centro di controllo moderazione Lumen.</p>
+
+                                <div class="admin-stats-grid" id="admin-stats-grid">
+                                    <div class="admin-stat"><span>Online</span><strong id="admin-stat-online">0</strong></div>
+                                    <div class="admin-stat"><span>Bannati</span><strong id="admin-stat-banned">0</strong></div>
+                                    <div class="admin-stat"><span>Segnalazioni</span><strong id="admin-stat-reports">0</strong></div>
+                                    <div class="admin-stat"><span>Appeals aperti</span><strong id="admin-stat-appeals">0</strong></div>
+                                </div>
+
+                                <button id="admin-open-users-panel" class="btn-primary admin-hub-main-btn" type="button">
+                                    <i data-lucide="users"></i>
+                                    Gestione Utenti
+                                </button>
+                            </div>
+
+                            <div class="settings-card admin-reports-hub-card">
+                                <h4 class="card-title"><i data-lucide="flag"></i> Segnalazioni</h4>
+                                <div class="admin-report-tabs">
+                                    <button class="admin-report-tab active" type="button" data-report-tab="user">Utenti</button>
+                                    <button class="admin-report-tab" type="button" data-report-tab="bug">Bug</button>
+                                </div>
+                                <div id="admin-reports-list" class="admin-reports-list lumen-scroll">
+                                    <p class="secondary-text">Caricamento segnalazioni...</p>
+                                </div>
+                            </div>
+
+                            <div class="settings-card admin-appeals-card">
+                                <h4 class="card-title"><i data-lucide="message-square"></i> Appeals</h4>
+                                <p class="secondary-text">Richieste di revisione ban in attesa di moderazione.</p>
+                                <div id="admin-appeals-list" class="admin-appeals-list lumen-scroll">
+                                    <p class="secondary-text">Caricamento appeals...</p>
+                                </div>
+                            </div>
+
+                            <div class="settings-card admin-tools-card">
+                                <h4 class="card-title"><i data-lucide="gavel"></i> Admin Tools</h4>
+                                <p class="secondary-text">Ban, unban e log di moderazione.</p>
+
+                                <h5 class="admin-section-title">Ban utente</h5>
+                                <div class="admin-form">
+                                    <input type="text" id="admin-ban-uid" placeholder="UID utente">
+                                    <input type="text" id="admin-ban-duration" placeholder="Durata es. 2h, 7d, 30m, permanente">
+                                    <p class="secondary-text admin-hint">Esempi: <code>30m</code>, <code>12h</code>, <code>7d</code>, <code>permanente</code></p>
+                                    <textarea id="admin-ban-reason" rows="3" placeholder="Motivazione obbligatoria"></textarea>
+                                    <button id="admin-ban-submit" class="btn-danger" type="button">Applica ban</button>
+                                </div>
+
+                                <h5 class="admin-section-title">Unban utente</h5>
+                                <div class="admin-form inline-admin-form">
+                                    <input type="text" id="admin-unban-uid" placeholder="UID utente">
+                                    <button id="admin-unban-submit" class="btn-secondary" type="button">Rimuovi ban</button>
+                                </div>
+
+                                <h5 class="admin-section-title">Utenti bannati</h5>
+                                <div id="admin-banned-list" class="admin-banned-list lumen-scroll">
+                                    <p class="secondary-text">Caricamento...</p>
+                                </div>
+
+                                <h5 class="admin-section-title">Log moderazione</h5>
+                                <div id="admin-mod-log" class="admin-mod-log lumen-scroll">
+                                    <p class="secondary-text">Nessun log ancora.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <div id="group-modal" class="lumen-modal hidden">
+        <div class="lumen-modal-content">
+            <div class="modal-header">
+                <h3>Crea un nuovo gruppo</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="group-modal" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-form">
+                <input type="text" id="group-name-input" placeholder="Nome del gruppo...">
+                <button id="confirm-create-group" class="btn-primary" type="button">Crea Gruppo</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-delete-group" class="lumen-modal hidden">
+        <div class="lumen-modal-content modal-small">
+            <h3 class="danger-title">Elimina Gruppo</h3>
+            <p class="secondary-text">Sei sicuro di voler eliminare il gruppo?</p>
+            <div class="modal-actions">
+                <button id="btn-confirm-delete-no" class="btn-secondary" type="button">No</button>
+                <button id="btn-confirm-delete-yes" class="btn-danger" type="button">Elimina</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-group-members" class="lumen-modal hidden">
+        <div class="lumen-modal-content">
+            <div class="modal-header">
+                <h3 id="members-modal-title">Membri del Gruppo</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-group-members" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <button id="btn-open-invite-friends" class="btn-primary" type="button">
+                <i data-lucide="user-plus"></i>
+                Aggiungi membro
+            </button>
+            <div id="group-members-list-container" class="members-scroll-list"></div>
+        </div>
+    </div>
+
+    <div id="modal-invite-friends" class="lumen-modal hidden">
+        <div class="lumen-modal-content">
+            <div class="modal-header">
+                <h3>Invita Amici</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-invite-friends" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div id="invite-friends-list-container" class="members-scroll-list"></div>
+        </div>
+    </div>
+
+    <div id="modal-leave-group" class="lumen-modal hidden">
+        <div class="lumen-modal-content modal-small">
+            <h3>Lascia gruppo</h3>
+            <p class="secondary-text" id="leave-group-message">Vuoi uscire da questo gruppo?</p>
+            <div class="modal-actions">
+                <button id="btn-leave-group-no" class="btn-secondary" type="button">Annulla</button>
+                <button id="btn-leave-group-yes" class="btn-danger" type="button">Lascia gruppo</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-remove-friend" class="lumen-modal hidden">
+        <div class="lumen-modal-content modal-small">
+            <h3 class="danger-title">Rimuovi amico</h3>
+            <p class="secondary-text" id="remove-friend-message">Vuoi rimuovere questo amico?</p>
+            <div class="modal-actions">
+                <button id="btn-remove-friend-no" class="btn-secondary" type="button">Annulla</button>
+                <button id="btn-remove-friend-yes" class="btn-danger" type="button">Rimuovi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-friend-alias" class="lumen-modal hidden">
+        <div class="lumen-modal-content modal-small">
+            <h3>Soprannome privato</h3>
+            <p class="secondary-text">Questo nome sara' visibile solo nella tua interfaccia.</p>
+            <input type="text" id="friend-alias-input" placeholder="Es. Squad leader">
+            <div class="modal-actions">
+                <button id="btn-friend-alias-clear" class="btn-secondary" type="button">Rimuovi</button>
+                <button id="btn-friend-alias-save" class="btn-primary" type="button">Salva</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="avatar-crop-modal" class="lumen-modal hidden">
+        <div class="lumen-modal-content avatar-crop-modal-content">
+            <div class="modal-header">
+                <h3>Centra immagine profilo</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="avatar-crop-modal" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="avatar-crop-layout">
+                <div class="avatar-crop-stage" id="avatar-crop-stage">
+                    <img id="avatar-crop-image" alt="Anteprima avatar">
+                    <div class="avatar-crop-ring"></div>
+                </div>
+                <div class="avatar-crop-side">
+                    <canvas id="avatar-crop-preview" width="128" height="128"></canvas>
+                    <label class="form-label" for="avatar-zoom-range">Zoom</label>
+                    <input type="range" id="avatar-zoom-range" min="1" max="3" step="0.01" value="1">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="avatar-crop-cancel" class="btn-secondary" type="button">Annulla</button>
+                <button id="avatar-crop-confirm" class="btn-primary" type="button">Usa avatar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-report-user" class="lumen-modal hidden">
+        <div class="lumen-modal-content report-modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="user-x"></i> Segnala utente</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-report-user" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="report-user-form" class="report-form">
+                <label class="form-label" for="report-user-uid">UID utente *</label>
+                <input type="text" id="report-user-uid" placeholder="UID dell'utente da segnalare" required>
+
+                <label class="form-label" for="report-user-reason">Motivazione *</label>
+                <textarea id="report-user-reason" rows="4" placeholder="Descrivi il problema in modo chiaro..." required></textarea>
+
+                <label class="form-label" for="report-user-evidence">Prove / screenshot (facoltativo)</label>
+                <input type="file" id="report-user-evidence" accept="image/*" multiple>
+                <div id="report-user-evidence-preview" class="report-evidence-preview"></div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" type="button" data-close-modal="modal-report-user">Annulla</button>
+                    <button id="report-user-submit" class="btn-danger" type="submit">Invia segnalazione</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-report-bug" class="lumen-modal hidden">
+        <div class="lumen-modal-content report-modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="bug"></i> Segnala bug</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-report-bug" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="report-bug-form" class="report-form">
+                <label class="form-label" for="report-bug-area">Dove hai trovato il bug? *</label>
+                <select id="report-bug-area" required>
+                    <option value="">Seleziona area...</option>
+                    <option value="Home">Home</option>
+                    <option value="Chat">Chat</option>
+                    <option value="Gruppi">Gruppi</option>
+                    <option value="Impostazioni">Impostazioni</option>
+                    <option value="Mobile">Mobile</option>
+                    <option value="Altro">Altro</option>
+                </select>
+
+                <label class="form-label" for="report-bug-description">Descrizione bug *</label>
+                <textarea id="report-bug-description" rows="5" placeholder="Passi per riprodurre, comportamento atteso e reale..." required></textarea>
+
+                <label class="form-label" for="report-bug-evidence">Allegati (facoltativo)</label>
+                <input type="file" id="report-bug-evidence" accept="image/*" multiple>
+                <div id="report-bug-evidence-preview" class="report-evidence-preview"></div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" type="button" data-close-modal="modal-report-bug">Annulla</button>
+                    <button id="report-bug-submit" class="btn-primary" type="submit">Invia segnalazione</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-admin-report-detail" class="lumen-modal hidden modal-layer-mid">
+        <div class="lumen-modal-content admin-detail-modal-content">
+            <div class="modal-header">
+                <h3 id="admin-report-detail-title">Dettaglio segnalazione</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-admin-report-detail" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div id="admin-report-detail-body" class="admin-detail-body lumen-scroll"></div>
+        </div>
+    </div>
+
+    <div id="modal-admin-user-detail" class="lumen-modal hidden modal-layer-top">
+        <div class="lumen-modal-content admin-detail-modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="user"></i> Dettaglio utente</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-admin-user-detail" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div id="admin-user-detail-body" class="admin-detail-body lumen-scroll">
+                <p class="secondary-text">Caricamento...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-admin-report-action" class="lumen-modal hidden modal-layer-top">
+        <div class="lumen-modal-content report-modal-content">
+            <div class="modal-header">
+                <h3 id="admin-report-action-title">Azione segnalazione</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-admin-report-action" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="admin-report-action-form" class="report-form">
+                <p class="secondary-text" id="admin-report-action-hint"></p>
+                <label class="form-label" for="admin-report-action-note" id="admin-report-action-note-label">Nota per l'utente *</label>
+                <textarea id="admin-report-action-note" rows="4" placeholder="Scrivi i dettagli..." required></textarea>
+                <div id="admin-report-action-extra" class="admin-report-action-extra hidden">
+                    <label class="form-label" for="admin-report-action-taken">Azione eseguita (report utente)</label>
+                    <select id="admin-report-action-taken">
+                        <option value="nessuna_azione">Nessuna azione forte</option>
+                        <option value="warning">Warning / avviso</option>
+                        <option value="ban_temporaneo">Ban temporaneo</option>
+                        <option value="ban_permanente">Ban permanente</option>
+                    </select>
+                    <label class="form-label" for="admin-report-ban-duration">Durata ban (se temporaneo)</label>
+                    <input type="text" id="admin-report-ban-duration" placeholder="Es. 24h, 7d, permanente">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" type="button" data-close-modal="modal-admin-report-action">Annulla</button>
+                    <button id="admin-report-action-confirm" class="btn-primary" type="submit">Conferma</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-appeal-request" class="lumen-modal hidden modal-layer-top">
+        <div class="lumen-modal-content report-modal-content">
+            <div class="modal-header">
+                <h3>Appello sospensione</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-appeal-request" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="appeal-request-form" class="report-form">
+                <label class="form-label" for="appeal-reason">Perché ritieni che il ban sia ingiusto? *</label>
+                <textarea id="appeal-reason" rows="3" placeholder="Motivazione breve" required></textarea>
+
+                <label class="form-label" for="appeal-details">Spiegazione dettagliata *</label>
+                <textarea id="appeal-details" rows="5" placeholder="Descrivi i fatti e allega le prove..." required></textarea>
+
+                <label class="form-label" for="appeal-attachments">Allegati / prove (opzionale)</label>
+                <input type="file" id="appeal-attachments" accept="image/*" multiple>
+                <div id="appeal-attachments-preview" class="report-evidence-preview"></div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" type="button" data-close-modal="modal-appeal-request">Annulla</button>
+                    <button id="appeal-request-submit" class="btn-primary" type="submit">Invia appeal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-admin-appeal-detail" class="lumen-modal hidden modal-layer-top">
+        <div class="lumen-modal-content admin-detail-modal-content">
+            <div class="modal-header">
+                <h3 id="admin-appeal-detail-title">Dettaglio appeal</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-admin-appeal-detail" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div id="admin-appeal-detail-body" class="admin-detail-body lumen-scroll">
+                <p class="secondary-text">Caricamento...</p>
+            </div>
+            <div class="modal-actions admin-appeal-actions">
+                <button id="admin-appeal-ignore" class="btn-secondary" type="button">Ignora</button>
+                <button id="admin-appeal-accept" class="btn-primary" type="button">Sban e accetta</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-admin-appeal-confirm" class="lumen-modal hidden modal-layer-x">
+        <div class="lumen-modal-content admin-detail-modal-content" style="max-width: 520px; width: min(100%, 520px);">
+            <div class="modal-header">
+                <h3>Conferma Sban / Riduzione ban</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-admin-appeal-confirm" title="Annulla">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="admin-appeal-accept-form" class="report-form">
+                <label class="form-label" for="admin-appeal-confirm-note">Motivazione admin *</label>
+                <textarea id="admin-appeal-confirm-note" rows="4" placeholder="Scrivi perché accetti o riduci il ban..." required></textarea>
+
+                <div class="checkbox-control">
+                    <input type="checkbox" id="admin-appeal-reduce-ban" />
+                    <label for="admin-appeal-reduce-ban">Riduci durata ban</label>
+                </div>
+                <div id="admin-appeal-reduce-duration-group" class="hidden">
+                    <label class="form-label" for="admin-appeal-new-duration">Nuova durata ban</label>
+                    <input type="text" id="admin-appeal-new-duration" placeholder="30m, 1h, 2d, permanente" />
+                    <p class="secondary-text">Se lasci vuoto la durata verrà mantenuta e il ban non verrà rimosso.</p>
+                </div>
+                <div class="modal-actions" style="justify-content: flex-end; gap: 12px; margin-top: 12px;">
+                    <button class="btn-secondary" type="button" data-close-modal="modal-admin-appeal-confirm">Annulla</button>
+                    <button id="admin-appeal-accept-confirm" class="btn-primary" type="submit">Conferma</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-user-appeal-detail" class="lumen-modal hidden modal-layer-top">
+        <div class="lumen-modal-content admin-detail-modal-content">
+            <div class="modal-header">
+                <h3>Dettaglio appeal</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-user-appeal-detail" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div id="user-appeal-detail-body" class="admin-detail-body lumen-scroll">
+                <p class="secondary-text">Seleziona un appeal per visualizzare i dettagli.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-ban-reentry" class="lumen-modal hidden modal-layer-top">
+        <div class="lumen-modal-content admin-detail-modal-content" style="max-width: 520px; width: min(100%, 520px);">
+            <div class="modal-header">
+                <h3>Rientro su Lumen</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-ban-reentry" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="admin-detail-body lumen-scroll">
+                <p id="ban-reentry-message" class="secondary-text">Caricamento informazioni...</p>
+            </div>
+            <div class="modal-actions" style="justify-content: flex-end; gap: 12px; margin-top: 12px;">
+                <button id="ban-reentry-confirm" class="btn-primary" type="button">Conferma e rientra</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-report-card-view" class="lumen-modal hidden modal-layer-mid">
+        <div class="lumen-modal-content admin-detail-modal-content">
+            <div class="modal-header">
+                <h3 id="report-card-view-title">Dettaglio segnalazione</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-report-card-view" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div id="report-card-view-body" class="admin-detail-body lumen-scroll"></div>
+        </div>
+    </div>
+
+    <div id="modal-admin-users" class="lumen-modal hidden modal-layer-mid">
+        <div class="lumen-modal-content admin-users-modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="users"></i> Gestione Utenti</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-admin-users" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="search-container">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="admin-users-search" placeholder="Cerca per nickname o UID...">
+            </div>
+            <div id="admin-users-list" class="admin-users-list lumen-scroll">
+                <p class="secondary-text">Caricamento utenti...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-custom-theme" class="lumen-modal hidden">
+        <div class="lumen-modal-content" style="width: min(100%, 720px);">
+            <div class="modal-header">
+                <h3>Configura Tema Personalizzato</h3>
+                <button class="btn-close-modal" type="button" data-close-modal="modal-custom-theme" title="Chiudi">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-form">
+                <div class="theme-preview-container">
+                    <div class="theme-preview-mockup" id="theme-preview-mockup">
+                        <div class="mockup-sidebar">
+                            <div class="mockup-dot active"></div>
+                            <div class="mockup-dot"></div>
+                            <div class="mockup-dot"></div>
+                        </div>
+                        <div class="mockup-panel">
+                            <div class="mockup-line" style="width: 80%;"></div>
+                            <div class="mockup-line"></div>
+                            <div class="mockup-line" style="width: 60%;"></div>
+                        </div>
+                        <div class="mockup-content">
+                            <div class="mockup-card">
+                                <div class="mockup-text"></div>
+                                <div class="mockup-text short"></div>
+                            </div>
+                            <div class="mockup-card" style="align-self: flex-start; background: transparent; border-color: transparent;">
+                                <div class="mockup-text" style="width: 100%;"></div>
+                                <div class="mockup-text" style="width: 80%;"></div>
+                            </div>
+                            <div class="mockup-button"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-settings-controls">
+                        <div class="color-picker-group">
+                            <label>Colore Sfondo</label>
+                            <input type="color" id="custom-theme-bg" value="#080c12">
+                        </div>
+                        <div class="color-picker-group">
+                            <label>Colore Card / Pannelli</label>
+                            <input type="color" id="custom-theme-card" value="#18202e">
+                        </div>
+                        <div class="color-picker-group">
+                            <label>Colore Accento</label>
+                            <input type="color" id="custom-theme-accent" value="#6366f1">
+                        </div>
+                        <div class="color-picker-group">
+                            <label>Colore Testo</label>
+                            <input type="color" id="custom-theme-text" value="#f8fafc">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="btn-custom-theme-random" class="btn-secondary" type="button">
+                        <i data-lucide="refresh-cw"></i>
+                        Random
+                    </button>
+                    <button id="btn-custom-theme-save" class="btn-primary" type="button">
+                        Salva ed esci
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ban-overlay" class="ban-overlay hidden">
+        <div class="ban-popup">
+            <div class="ban-popup-header">
+                <div class="ban-popup-icon"><i data-lucide="shield-off"></i></div>
+                <div>
+                    <h3 id="ban-overlay-title">Il tuo account è stato sospeso</h3>
+                    <p id="ban-overlay-description">Accesso a Lumen bloccato finché la sospensione è attiva. Non è possibile continuare ad usare l'app fino a revoca ban.</p>
+                </div>
+            </div>
+            <div class="ban-summary-grid">
+                <div class="ban-summary-item">
+                    <strong>Stato</strong>
+                    <span id="ban-status-label">Sospensione attiva</span>
+                </div>
+                <div class="ban-summary-item">
+                    <strong>Durata</strong>
+                    <span id="ban-duration">Permanente</span>
+                </div>
+                <div class="ban-summary-item">
+                    <strong>Inizio ban</strong>
+                    <span id="ban-created-at">—</span>
+                </div>
+                <div class="ban-summary-item">
+                    <strong>Scadenza</strong>
+                    <span id="ban-expires-at">—</span>
+                </div>
+            </div>
+            <div class="ban-reason-box">
+                <strong>Motivazione</strong>
+                <p id="ban-reason">Violazione delle regole</p>
+            </div>
+            <div class="ban-summary-grid">
+                <div class="ban-summary-item" style="grid-column: span 2;">
+                    <strong>Moderatore</strong>
+                    <span id="ban-admin-id">—</span>
+                </div>
+                <div id="ban-unban-note-row" class="ban-summary-item hidden" style="grid-column: span 2;">
+                    <strong>Nota amministrativa</strong>
+                    <span id="ban-unban-note">—</span>
+                </div>
+            </div>
+            <div id="ban-education-copy" class="ban-education hidden">
+                <p>Ti invitiamo a seguire il regolamento della piattaforma.</p>
+                <p>Ulteriori violazioni potrebbero comportare sospensioni più severe.</p>
+            </div>
+            <div id="ban-appeal-status-body" class="ban-appeal-status">
+                <p class="secondary-text">Puoi richiedere un appello per la tua sospensione.</p>
+            </div>
+            <div id="ban-ended-actions" class="ban-actions hidden" style="justify-content: flex-end; margin-top: 12px; gap: 12px;">
+                <button id="ban-reentry-button" class="btn-primary" type="button">Riaccedi</button>
+            </div>
+            <div id="ban-active-actions" class="modal-actions" style="justify-content: flex-end; gap: 12px; margin-top: 12px;">
+                <button id="ban-appeal-open" class="btn-secondary" type="button">Richiedi appello</button>
+                <button id="ban-logout-button" class="btn-danger" type="button">Esci</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lumen-dropdown-portal"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
+    <script src="./firebase.js"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
