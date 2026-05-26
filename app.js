@@ -2045,7 +2045,9 @@ async function updateBanDuration(uid, durationMs, durationLabel) {
     await updateDoc(banRef, {
         duration: durationLabel,
         expiresAt: expiresAt || null,
-        updatedAt: serverTimestamp()
+        active: true,
+        updatedAt: serverTimestamp(),
+        updatedBy: state.currentUser?.uid || null
     });
 }
 
@@ -5030,6 +5032,15 @@ async function unbanUser(uid, note = "Ban rimosso manualmente.") {
             unbannedAt: serverTimestamp(),
             unbannedBy: state.currentUser.uid
         });
+    }
+
+    try {
+        await updateDoc(doc(db, "users", uid), {
+            status: "online",
+            lastSeenAt: serverTimestamp()
+        });
+    } catch (err) {
+        console.warn("Failed to update user status after unban:", err);
     }
 
     await appendModerationLog({
