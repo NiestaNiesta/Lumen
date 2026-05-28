@@ -1727,7 +1727,7 @@ async function updateAppealStatus(appealId, status, adminNote = "", options = {}
         status: partialBan ? "partial" : status,
         adminNote,
         newDurationLabel: partialBan ? banDurationLabel : null,
-        newExpiresAt: partialBan ? new Date(Date.now() + banDurationMs).toISOString() : null,
+        newExpiresAt: partialBan ? (banDurationMs === null ? null : new Date(Date.now() + banDurationMs).toISOString()) : null,
         resolvedBy: state.currentUser.uid,
         resolvedAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -1773,14 +1773,14 @@ async function updateAppealStatus(appealId, status, adminNote = "", options = {}
         appealId: appeal.id
     });
 
-    if (status === "accepted" && partialBan && banDurationMs !== null) {
+    if (status === "accepted" && partialBan) {
         await updateBanDuration(appeal.userId, banDurationMs, banDurationLabel);
         await sendBotAppealMessage(appeal.userId, {
             appeal,
             resolutionStatus: "partial",
             adminNote,
             newDurationLabel: banDurationLabel,
-            newExpiresAt: new Date(Date.now() + banDurationMs).toISOString()
+            newExpiresAt: banDurationMs === null ? "" : new Date(Date.now() + banDurationMs).toISOString()
         });
 
         showNotification({
@@ -2004,44 +2004,49 @@ function bindAdminAppealConfirmActions() {
             return;
         }
 
-        if (!reduceBan) {
-            await updateAppealStatus(appealId, "accepted", adminNote);
-        } else {
-            if (!durationValue) {
-                alert("Inserisci la nuova durata ban.");
-                return;
+        try {
+            if (!reduceBan) {
+                await updateAppealStatus(appealId, "accepted", adminNote);
+            } else {
+                if (!durationValue) {
+                    alert("Inserisci la nuova durata ban.");
+                    return;
+                }
+
+                const parsed = parseBanDuration(durationValue);
+                if (parsed.error) {
+                    alert(parsed.error);
+                    return;
+                }
+
+                await updateAppealStatus(appealId, "accepted", adminNote, {
+                    partialBan: true,
+                    banDurationMs: parsed.ms,
+                    banDurationLabel: parsed.label
+                });
             }
 
-            const parsed = parseBanDuration(durationValue);
-            if (parsed.error) {
-                alert(parsed.error);
-                return;
-            }
-
-            await updateAppealStatus(appealId, "accepted", adminNote, {
-                partialBan: true,
-                banDurationMs: parsed.ms,
-                banDurationLabel: parsed.label
-            });
+            hideLayeredModal("modal-admin-appeal-confirm");
+            hideLayeredModal("modal-admin-appeal-detail");
+            state.pendingAppealAction = null;
+        } catch (error) {
+            console.error("Failed to resolve appeal:", error);
+            alert("Errore durante la gestione dell'appeal. Riprova.");
         }
-
-        hideLayeredModal("modal-admin-appeal-confirm");
-        hideLayeredModal("modal-admin-appeal-detail");
-        state.pendingAppealAction = null;
     });
 }
 
 async function updateBanDuration(uid, durationMs, durationLabel) {
-    if (!uid || durationMs === null) return;
+    if (!uid || durationMs === undefined) return;
 
     const banRef = doc(db, "bans", uid);
     const banSnap = await getDoc(banRef);
     if (!snapExists(banSnap)) return;
 
     const ban = snapData(banSnap);
-    if (!ban?.active) return;
+    if (ban?.active === false) return;
 
-    const expiresAt = durationMs ? new Date(Date.now() + durationMs) : null;
+    const expiresAt = durationMs === null ? null : new Date(Date.now() + durationMs);
     await updateDoc(banRef, {
         duration: durationLabel,
         expiresAt: expiresAt || null,
